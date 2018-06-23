@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#bash /mnt/sda1/dnsc '["init","nolan.boundery.me","108.255.194.60",3]'
+#bash /mnt/sda1/dnsc '["add","mail","A","108.255.194.60"]'
+#bash /mnt/sda1/dnsc '["add","@","MX",["mail.nolan.boundery.me.",10]]'
+
+#XXX Obviously this needs to be a declarative format, downloading and running
+#    sh code on the host is a non-starter...
+
+DOMAINNAME=nolan.boundery.me
+
+#XXX Change these networks to be Unix Domain Sockets passed in with -v?
+docker network create --internal post-spam
+docker network create --internal spam-dove
+
+docker create -v /dev/log:/dev/log -p 25:25 -e DOMAINNAME=$DOMAINNAME -e USERNAME=nolan --hostname mail --name postfix postfix
+docker network connect post-spam postfix
+
+PF_SUBNET=`docker network inspect post-spam --format '{{(index .IPAM.Config 0).Subnet}}' | cut -d'.' -f1-3`
+docker create -v /dev/log:/dev/log -e PF_SUBNET=$PF_SUBNET --net post-spam --hostname spamassassin --name spamassassin spamassassin
+docker network connect spam-dove spamassassin
+
+SPAM_SUBNET=`docker network inspect spam-dove --format '{{(index .IPAM.Config 0).Subnet}}' | cut -d'.' -f1-3`
+docker create -v /dev/log:/dev/log -e DOMAINNAME=$DOMAINNAME -e USERNAME=nolan -e SPAM_SUBNET=$SPAM_SUBNET --net private --hostname imap --name dovecot dovecot
+docker network connect spam-dove dovecot
+
+docker start dovecot
+docker start spamassassin
+docker start postfix

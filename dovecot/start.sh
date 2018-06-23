@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#XXX This should authenticate against the host, or maybe an auth container.
+useradd -m $USERNAME
+echo $USERNAME:prjx321 | chpasswd
+
+#XXX This should use Let's Encrypt.
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
+        -out /etc/dovecot/dovecot.pem -keyout /etc/dovecot/private/dovecot.pem \
+        -subj "/C=US/ST=CA/L=CA/O=none/OU=none/CN=$DOMAINNAME/emailAddress=postmaster@$DOMAINNAME"
+
+LMTPIP=`ip -o addr | grep -Eo $SPAM_SUBNET.[0-9]+`
+sed -i -e "s/XXXLMTPIPXXX/$LMTPIP/g" /etc/dovecot/conf.d/10-master.conf
+
+/usr/sbin/dovecot -F -c /etc/dovecot/dovecot.conf
