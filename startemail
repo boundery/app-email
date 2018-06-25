@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#bash /mnt/sda1/dnsc '["init","nolan.boundery.me","108.255.194.60",3]'
-#bash /mnt/sda1/dnsc '["add","mail","A","108.255.194.60"]'
-#bash /mnt/sda1/dnsc '["add","@","MX",["mail.nolan.boundery.me.",10]]'
-
 #XXX Obviously this needs to be a declarative format, downloading and running
 #    sh code on the host is a non-starter...
 
@@ -27,3 +23,7 @@ docker network connect spam-dove dovecot
 docker start dovecot
 docker start spamassassin
 docker start postfix
+
+bash /mnt/sda1/dnsc '["add","imap","A","172.18.0.2"]'
+#bash /mnt/sda1/dnsc '["add","mail","A","PUBLIC_IP"]'
+#bash /mnt/sda1/dnsc '["add","@","MX",["mail.nolan.boundery.me.",10]]'
