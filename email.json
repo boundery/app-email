@@ -1,0 +1,20 @@
+{
+    "containers": {
+        "postfix": {
+            "expose": [ [ "25", "25" ] ],
+            "networks": [ "post-spam" ],
+            "hostname": "mail",
+            "PUBDNS": [ "A:mail", "MX:mail:10" ]
+        },
+        "spamassassin": {
+            "networks": [ "post-spam", "spam-dove" ],
+            "hostname": "spamassassin"
+        },
+        "dovecot": {
+            "networks": [ "spam-dove", "private"],
+            "hostname": "imap",
+            "storagedirs": [ "/home/" ],
+            "PRIVDNS": [ "imap" ]
+        }
+    }
+}

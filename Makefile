@@ -1,13 +1,16 @@
+#ARCH=amd64
+ARCH=arm32v7
+
 spamassassin:
-	docker build --build-arg FROM_PREFIX=arm32v7/ -t spamassassin ./spamassassin
+	docker build --build-arg FROM_PREFIX=$(ARCH)/ -t $(ARCH)/email-spamassassin ./spamassassin
 CONTAINERS += spamassassin
 
 dovecot:
-	docker build --build-arg FROM_PREFIX=arm32v7/ -t dovecot ./dovecot
+	docker build --build-arg FROM_PREFIX=$(ARCH)/ -t $(ARCH)/email-dovecot ./dovecot
 CONTAINERS += dovecot
 
 postfix:
-	docker build --build-arg FROM_PREFIX=arm32v7/ -t postfix ./postfix
+	docker build --build-arg FROM_PREFIX=$(ARCH)/ -t $(ARCH)/email-postfix ./postfix
 CONTAINERS += postfix
 
 PHONY += $(CONTAINERS)
@@ -15,11 +18,13 @@ PHONY += $(CONTAINERS)
 PHONY += all
 all: $(CONTAINERS)
 
-#XXX Remove the -0 from xz when things are stable.
 PHONY += deploy
 deploy: $(CONTAINERS)
 	@test $(SERVER)
-	docker save $? | xz -0 | pv -W | ssh root@$(SERVER) 'cat>data/sslnginx/html/apps/email.tar.xz'
-	scp startemail root@$(SERVER):~/data/sslnginx/html/apps/
+	@for i in $?; do \
+	  docker tag $(ARCH)/email-$$i localhost:5000/$(ARCH)/email-$$i ; \
+	  docker push localhost:5000/$(ARCH)/email-$$i ; \
+	done
+	scp email.json root@$(SERVER):~/data/sslnginx/html/apps/
 
 .PHONY: $(PHONY)

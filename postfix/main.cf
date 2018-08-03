@@ -40,5 +40,5 @@ recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = all
 
-mailbox_transport = lmtp:inet:spamassassin
-virtual_transport = lmtp:inet:spamassassin
+mailbox_transport = lmtp:inet:email-spamassassin
+virtual_transport = lmtp:inet:email-spamassassin

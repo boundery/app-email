@@ -9,7 +9,7 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
         -out /etc/dovecot/dovecot.pem -keyout /etc/dovecot/private/dovecot.pem \
         -subj "/C=US/ST=CA/L=CA/O=none/OU=none/CN=$DOMAINNAME/emailAddress=postmaster@$DOMAINNAME"
 
-LMTPIP=`ip -o addr | grep -Eo $SPAM_SUBNET.[0-9]+`
+LMTPIP=`ip -o addr show to $spam-dove_SUBNET | cut -d'/' -f1 | cut -d' ' -f7`
 sed -i -e "s/XXXLMTPIPXXX/$LMTPIP/g" /etc/dovecot/conf.d/10-master.conf
 
 /usr/sbin/dovecot -F -c /etc/dovecot/dovecot.conf
