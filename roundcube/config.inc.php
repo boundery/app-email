@@ -99,3 +99,6 @@ $ssl_no_check = array(
 $config['imap_conn_options'] = $ssl_no_check;
 $config['smtp_conn_options'] = $ssl_no_check;
 $config['managesieve_conn_options'] = $ssl_no_check;
+
+$config['identities_level'] = 3;
+$config['reply_all_mode'] = 1;
