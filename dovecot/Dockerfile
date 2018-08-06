@@ -9,6 +9,4 @@ RUN    apt-get update \
 COPY start.sh /
 COPY 10-mail.conf 10-ssl.conf 10-auth.conf 10-master.conf 20-lmtp.conf /etc/dovecot/conf.d/
 
-EXPOSE 993/tcp
-
 CMD ["bash", "/start.sh"]
