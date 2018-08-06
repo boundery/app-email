@@ -15,6 +15,12 @@
             "hostname": "imap",
             "storagedirs": [ "/home/" ],
             "PRIVDNS": [ "imap" ]
+        },
+        "roundcube": {
+            "networks": [ "private" ],
+            "hostname": "webmail",
+            "storagedirs": [ "/var/lib/dbconfig-common/sqlite3/roundcube/" ],
+            "PRIVDNS": [ "webmail" ]
         }
     }
 }

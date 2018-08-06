@@ -13,6 +13,10 @@ postfix:
 	docker build --build-arg FROM_PREFIX=$(ARCH)/ -t $(ARCH)/email-postfix ./postfix
 CONTAINERS += postfix
 
+roundcube:
+	docker build --build-arg FROM_PREFIX=$(ARCH)/ -t $(ARCH)/email-roundcube ./roundcube
+CONTAINERS += roundcube
+
 PHONY += $(CONTAINERS)
 
 PHONY += all
