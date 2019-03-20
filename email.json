@@ -4,7 +4,8 @@
             "expose": [ [ "25", "25" ] ],
             "networks": [ "post-spam" ],
             "hostname": "mail",
-            "PUBDNS": [ "A:mail", "MX:mail:10" ]
+            "PUBDNS": [ "A:mail", "MX:mail:10" ],
+            "env": [ "SMTP=1" ]
         },
         "spamassassin": {
             "networks": [ "post-spam", "spam-dove" ],
@@ -21,6 +22,13 @@
             "hostname": "webmail",
             "storagedirs": [ "/var/lib/dbconfig-common/sqlite3/roundcube/" ],
             "PRIVDNS": [ "webmail" ]
+        },
+        "submission": {
+            "networks": [ "private" ],
+            "hostname": "submission",
+            "PRIVDNS": [ "submission" ],
+            "env": [ "SUBMISSION=1" ],
+            "reuse": "postfix"
         }
     }
 }

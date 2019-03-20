@@ -7,7 +7,7 @@ RUN    apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY start.sh /
-COPY master.cf main.cf /etc/postfix/
+COPY master.cf.* main.cf /etc/postfix/
 
 EXPOSE 25/tcp
 
