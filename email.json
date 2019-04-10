@@ -5,7 +5,8 @@
             "networks": [ "post-spam" ],
             "hostname": "mail",
             "PUBDNS": [ "A:mail", "MX:mail:10" ],
-            "env": [ "SMTP=1" ]
+            "env": [ "SMTP=1" ],
+            "TLSCert": { "keydir":"/keys", "change":"/cert_change" }
         },
         "spamassassin": {
             "networks": [ "post-spam", "spam-dove" ],
@@ -15,20 +16,23 @@
             "networks": [ "spam-dove", "private"],
             "hostname": "imap",
             "storagedirs": [ "/home/" ],
-            "PRIVDNS": [ "imap" ]
+            "PRIVDNS": [ "imap" ],
+            "TLSCert": { "keydir":"/keys", "change":"/cert_change" }
         },
         "roundcube": {
             "networks": [ "private" ],
             "hostname": "webmail",
             "storagedirs": [ "/var/lib/dbconfig-common/sqlite3/roundcube/" ],
-            "PRIVDNS": [ "webmail" ]
+            "PRIVDNS": [ "webmail" ],
+            "TLSCert": { "keydir":"/keys", "change":"/cert_change" }
         },
         "submission": {
             "networks": [ "private" ],
             "hostname": "submission",
             "PRIVDNS": [ "submission" ],
             "env": [ "SUBMISSION=1" ],
-            "reuse": "postfix"
+            "reuse": "postfix",
+            "TLSCert": { "keydir":"/keys", "change":"/cert_change" }
         }
     }
 }
