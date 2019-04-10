@@ -22,6 +22,8 @@ $config = array();
 /* Do not set db_dsnw here, use dpkg-reconfigure roundcube-core to configure database ! */
 include_once("/etc/roundcube/debian-db-roundcube.php");
 
+$config['mail_domain'] = 'XXXMAILDOMAINXXX';
+
 // The mail host chosen to perform the log-in.
 // Leave blank to show a textbox at login, give a list of hosts
 // to display a pulldown menu or set one host as string.
