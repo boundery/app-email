@@ -24,7 +24,7 @@ all: $(CONTAINERS)
 
 PHONY += deploy
 deploy: $(CONTAINERS)
-	@test $(SERVER)
+	@test $(SERVER) || ( echo 'set SERVER' && false)
 	@echo -e "\n\nRun ssh root@$(SERVER) -L5000:localhost:5000\n\n"
 	@for i in $?; do \
 	  docker tag $(ARCH)/email-$$i localhost:5000/$(ARCH)/email-$$i ; \
